@@ -1,0 +1,59 @@
+<html>
+	<head>
+		<title>Bookmark feature</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="//s3.amazonaws.com/scripting.com/code/includes/jquery-1.9.1.min.js"></script>
+<link href="//s3.amazonaws.com/scripting.com/code/includes/bootstrap.css" rel="stylesheet">
+<script src="//s3.amazonaws.com/scripting.com/code/includes/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="//s3.amazonaws.com/scripting.com/code/fontawesome/css/all.css">
+<link href="//fonts.googleapis.com/css?family=Ubuntu:400,500i,700" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Rancho" rel="stylesheet">
+
+<script src="//s3.amazonaws.com/scripting.com/code/includes/basic/code.js"></script>
+<link href="//s3.amazonaws.com/scripting.com/code/includes/basic/styles.css" rel="stylesheet" type="text/css">
+
+		<script src="http://scripting.com/code/concord/testing/3.0.6/concord.js"></script>
+		<link rel="stylesheet" href="http://scripting.com/code/concord/testing/3.0.6/concordstyles.css"/>
+		<script src="http://fargo.io/code/shared/outliner.js"></script>
+		<script src="http://scripting.com/code/opmlpackage/client/opml.js"></script>
+		<link href="http://fargo.io/code/shared/outlinedialog.css" rel="stylesheet" type="text/css">
+		<script src="http://fargo.io/code/shared/outlinedialog.js"></script>
+		<script src="http://scripting.com/code/testing/bookmarks/bookmarks.js"></script>
+		<script src="code.js"></script>
+		<link href="styles.css" rel="stylesheet" type="text/css">
+		</head>
+	<body>
+		<div class="divMenubar" id="idMenubar">
+			<div class="topbar-wrapper" style="z-index: 5;">
+				<div class="navbar navbar-fixed-top" data-dropdown="dropdown">
+					<div class="navbar-inner">
+						<div class="container">
+							<a class="brand" onclick="clickHome ()"><span id="idMenuProductName">Bookmark feature</span></a>
+							<ul class="nav" id="idMainMenuList">
+								<li class="dropdown" id="idMainMenu"> 
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu&nbsp;<b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										</ul>
+									</li>
+								<li class="dropdown" id="idBookmarksMenu"> 
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bookmarks&nbsp;<b class="caret"></b></a>
+									<ul class="dropdown-menu" id="idBookmarksList">
+										</ul>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		<div class="divPageBody">
+			</div>
+		<script>
+			$(document).ready (function () {
+				startup ();
+				});
+			</script>
+		</body>
+	</html>
