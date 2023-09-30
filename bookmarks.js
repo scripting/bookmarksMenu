@@ -123,6 +123,10 @@ function bookMarksMenu (options) {
 		var styles = ".divOutlineDialog {width: 400px; left: 50%;}\n";
 		appPrefs.outlineFontSize = 14;
 		appPrefs.outlineLineHeight = 20;
+		
+		appPrefs.outlineFontSize = 16; //9/30/23 by DW
+		appPrefs.outlineLineHeight = 26;
+		
 		const opmltext = opmlStringify (theMenuOutline);
 		flEnableBackgroundTasks = false;
 		
@@ -142,8 +146,17 @@ function bookMarksMenu (options) {
 				});
 			}
 		
+		var flRestoreConcordHandleEvents = false; //9/30/23 by DW
+		if (!concord.handleEvents) {
+			concord.handleEvents = true;
+			flRestoreConcordHandleEvents = true;
+			}
+		
 		outlineDialog ("Bookmarks", opmltext, false, function (flSave, opmltext) {
 			flEnableBackgroundTasks = true;
+			if (flRestoreConcordHandleEvents) { //9/30/23 by DW
+				flRestoreConcordHandleEvents = false;
+				}
 			if (flSave) {
 				options.opmltext = opmltext;
 				saveBookmarks ();
