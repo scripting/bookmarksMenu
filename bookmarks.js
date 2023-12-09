@@ -9,6 +9,7 @@ function bookMarksMenu (options) {
 		idList: "idBookmarksList",
 		maxMenuItemChars: 20,
 		flAddBookmarkCommand: true,
+		flCanInsertStyles: true, //12/8/23 by DW
 		getBookmarkTitle: function () {
 			return (document.title);
 			}
@@ -120,7 +121,7 @@ function bookMarksMenu (options) {
 		theList.append (editBookmarksCommand);
 		}
 	function editBookmarks (afterOpenCallback) {
-		var styles = ".divOutlineDialog {width: 400px; left: 50%;}\n";
+		const styles = (getBoolean (options.flCanInsertStyles)) ? ".divOutlineDialog {width: 400px; left: 50%;}\n" : "";
 		appPrefs.outlineFontSize = 14;
 		appPrefs.outlineLineHeight = 20;
 		
