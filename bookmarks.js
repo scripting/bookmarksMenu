@@ -153,7 +153,15 @@ function bookMarksMenu (options) {
 			flRestoreConcordHandleEvents = true;
 			}
 		
-		outlineDialog ("Bookmarks", opmltext, false, function (flSave, opmltext) {
+		const outlineDialogOptions = {
+			title: "Bookmarks",
+			flReadOnly: false,
+			whereToAppend: $("body"), 
+			divDialogStyles: "divBookmarksDialog",
+			opmltext,
+			afterOpenCallback: afterOpen
+			};
+		outlineDialog (outlineDialogOptions, function (flSave, opmltext) {
 			flEnableBackgroundTasks = true;
 			if (flRestoreConcordHandleEvents) { //9/30/23 by DW
 				flRestoreConcordHandleEvents = false;
@@ -164,7 +172,7 @@ function bookMarksMenu (options) {
 				theMenuOutline = opml.parse (opmltext);
 				buildMenu ();
 				}
-			}, afterOpen, undefined, undefined, styles);
+			});
 		}
 	function saveBookmarks () {
 		options.saveBookmarks (options.opmltext);
