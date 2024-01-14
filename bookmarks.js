@@ -7,11 +7,25 @@ function bookMarksMenu (options) {
 		saveBookmarks: function () {
 			},
 		idList: "idBookmarksList",
-		maxMenuItemChars: 20,
+		maxMenuItemChars: 30,
 		flAddBookmarkCommand: true,
 		flCanInsertStyles: true, //12/8/23 by DW
+		whereToAppend: $("body"), //1/12/24 by DW 
+		editBookmarksText: "Edit bookmarks...", //1/13/24 by DW
 		getBookmarkTitle: function () {
 			return (document.title);
+			},
+		handleMenuChoice: function (item) { //1/13/24 by DW
+			console.log ("handleMenuChoice, atts == " + jsonStringify (item));
+			if (item.url === undefined) {
+				alertDialog ("Can't open the bookmark because there is no \"url\" attribute.");
+				}
+			else {
+				window.open (item.url);
+				}
+			},
+		isItemChecked: function (item) { //1/13/24 by DW
+			return (false);
 			}
 		};
 	for (var x in defaultOptions) {
@@ -21,6 +35,7 @@ function bookMarksMenu (options) {
 		}
 	
 	const nowstring = getNowstring ();
+	const check = "<i class=\"fa fa-check iMenuCheck\"></i>";
 	const emptyMenu = {
 		opml: {
 			head: {
@@ -56,6 +71,9 @@ function bookMarksMenu (options) {
 		const flHaveBookmarks = theMenuOutline.opml.body.subs.length > 0;
 		return (flHaveBookmarks);
 		}
+	function isItemChecked (item) {
+		return (options.isItemChecked (item));
+		}
 	
 	function buildMenu () {
 		const theList = $("#" + options.idList);
@@ -65,35 +83,32 @@ function bookMarksMenu (options) {
 			theList.append ($("<li class=\"divider\"></li>"));
 			}
 		function addBookmarkLevel (listInOutline, listInDom) {
-			listInOutline.forEach (function (item) {
-				var itemtext = trimWhitespace (item.text);
-				itemtext = maxStringLength (itemtext, options.maxMenuItemChars, false, true);
-				if (item.subs === undefined) {
-					if (itemtext == "-") {
-						addDivider (listInDom);
+			if (listInOutline !== undefined) { //1/12/24 by DW
+				listInOutline.forEach (function (item) {
+					var itemtext = trimWhitespace (item.text);
+					itemtext = maxStringLength (itemtext, options.maxMenuItemChars, false, true);
+					if (item.subs === undefined) {
+						if (itemtext == "-") {
+							addDivider (listInDom);
+							}
+						else {
+							const myCheck = (isItemChecked (item)) ? check : "";
+							const menuItem = $("<li><a href=\"#\">" + myCheck + itemtext + "</a></li>");
+							listInDom.append (menuItem);
+							menuItem.click (function () {
+								options.handleMenuChoice (item);
+								});
+							}
 						}
 					else {
-						const menuItem = $("<li><a href=\"#\">" + itemtext + "</a></li>");
-						listInDom.append (menuItem);
-						menuItem.click (function () {
-							console.log ("Open bookmark, atts == " + jsonStringify (item));
-							if (item.url === undefined) {
-								alertDialog ("Can't open the bookmark because there is no \"url\" attribute.");
-								}
-							else {
-								window.open (item.url);
-								}
-							});
+						var liMenuItem = $("<li class=\"dropdown-submenu\"><a href=\"#\">" + itemtext + "</a></li>");
+						var ulSubMenu = $("<ul class=\"dropdown-menu\"></ul>");
+						listInDom.append (liMenuItem);
+						addBookmarkLevel (item.subs, ulSubMenu);
+						liMenuItem.append (ulSubMenu);
 						}
-					}
-				else {
-					var liMenuItem = $("<li class=\"dropdown-submenu\"><a href=\"#\">" + itemtext + "</a></li>");
-					var ulSubMenu = $("<ul class=\"dropdown-menu\"></ul>");
-					listInDom.append (liMenuItem);
-					addBookmarkLevel (item.subs, ulSubMenu);
-					liMenuItem.append (ulSubMenu);
-					}
-				});
+					});
+				}
 			}
 		
 		if (options.flAddBookmarkCommand) {
@@ -114,7 +129,7 @@ function bookMarksMenu (options) {
 		addBookmarkLevel (theMenuOutline.opml.body.subs, theList);
 		
 		addDivider (theList);
-		const editBookmarksCommand = $("<li><a href=\"#\">Edit bookmarks...</a></li>");
+		const editBookmarksCommand = $("<li><a href=\"#\">" + options.editBookmarksText + "</a></li>");
 		editBookmarksCommand.click (function () {
 			editBookmarks (undefined);
 			});
@@ -156,7 +171,7 @@ function bookMarksMenu (options) {
 		const outlineDialogOptions = {
 			title: "Bookmarks",
 			flReadOnly: false,
-			whereToAppend: $("body"), 
+			whereToAppend: options.whereToAppend, //1/12/24 by DW
 			divDialogStyles: "divBookmarksDialog",
 			opmltext,
 			afterOpenCallback: afterOpen
@@ -177,6 +192,11 @@ function bookMarksMenu (options) {
 	function saveBookmarks () {
 		options.saveBookmarks (options.opmltext);
 		}
+	function updateMenuOutline (theNewMenuOutline) { //1/13/24 by DW -- a caller outside can add something to the menu
+		theMenuOutline = theNewMenuOutline;
+		options.opmltext = opml.stringify (theMenuOutline);
+		buildMenu ();
+		}
 	
 	this.start = function (callback) {
 		if (options.opmltext === undefined) {
@@ -191,4 +211,6 @@ function bookMarksMenu (options) {
 		};
 	this.addAndEdit = addAndEditNewBookmark;
 	this.haveBookmarks = haveBookmarks;
+	this.updateMenuOutline = updateMenuOutline; //1/13/24 by DW
+	this.buildMenu = buildMenu; //1/13/24 by DW
 	}
