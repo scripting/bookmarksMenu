@@ -1,3 +1,9 @@
+#### 1/15/24; 10:32:34 AM by DW
+
+We're now using the latest Concord.
+
+And the latest outlinedialog.
+
 #### 12/8/23; 12:28:51 PM by DW
 
 The hard-coded styles are a problem if you want to produce a mobile version. 

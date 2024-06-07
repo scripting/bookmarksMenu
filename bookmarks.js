@@ -136,6 +136,7 @@ function bookMarksMenu (options) {
 		theList.append (editBookmarksCommand);
 		}
 	function editBookmarks (afterOpenCallback) {
+		console.log ("editBookmarks");
 		const styles = (getBoolean (options.flCanInsertStyles)) ? ".divOutlineDialog {width: 400px; left: 50%;}\n" : "";
 		appPrefs.outlineFontSize = 14;
 		appPrefs.outlineLineHeight = 20;
@@ -198,7 +199,7 @@ function bookMarksMenu (options) {
 		buildMenu ();
 		}
 	
-	this.start = function (callback) {
+	me.start = function (callback) {
 		if (options.opmltext === undefined) {
 			theMenuOutline = emptyMenu;
 			options.opmltext = opmlStringify (emptyMenu);
@@ -209,8 +210,9 @@ function bookMarksMenu (options) {
 			}
 		buildMenu ();
 		};
-	this.addAndEdit = addAndEditNewBookmark;
-	this.haveBookmarks = haveBookmarks;
-	this.updateMenuOutline = updateMenuOutline; //1/13/24 by DW
-	this.buildMenu = buildMenu; //1/13/24 by DW
+	me.addAndEdit = addAndEditNewBookmark;
+	me.haveBookmarks = haveBookmarks;
+	me.updateMenuOutline = updateMenuOutline; //1/13/24 by DW
+	me.buildMenu = buildMenu; //1/13/24 by DW
+	me.editBookmarks = editBookmarks; //6/7/24 by DW
 	}
